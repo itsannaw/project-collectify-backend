@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     if @user.save
       render json: UserSerializer.new(@user).serializable_hash[:data][:attributes], status: :created
     else
-      render json: { errors: @user.errors.full_messages },
+      render json: { errors: @user.errors },
              status: :unprocessable_entity
     end
   end
@@ -30,8 +30,8 @@ class UsersController < ApplicationController
   def update
     return if @user.update(user_params)
 
-    render json: { errors: @user.errors.full_messages },
-           status: :unprocessable_entity
+    render json: { error: { message: 'Failed to create user', details: @user.errors.full_messages } },
+    status: :unprocessable_entity
   end
 
   # DELETE /users/{username}
