@@ -82,3 +82,4 @@ production:
   database: project_collectify_backend_production
   username: project_collectify_backend
   password: <%= ENV["PROJECT_COLLECTIFY_BACKEND_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>
