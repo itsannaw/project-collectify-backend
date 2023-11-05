@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :authorize_request, except: :create
-  before_action :find_user, except: %i[create index]
+  before_action :find_user, except: %i[create index block_users unblock_users delete_users]
 
   # GET /users
   def index
@@ -39,6 +39,33 @@ class UsersController < ApplicationController
     @user.destroy
   end
 
+  def block_users
+    users_ids = params[:selectedIds]
+    @users = User.where(id: users_ids).update_all(blocked: true)
+    if users_ids.include?(@current_user.id)
+      render json: { error: 'You have been blocked and logged out!' }, status: :unauthorized
+    else
+      render json: User.all
+    end
+  end
+
+  def unblock_users
+    users_ids = params[:selectedIds]
+    @users = User.where(id: users_ids).update_all(blocked: false)
+    render json: User.all
+  end
+
+  def delete_users
+    users_ids = params[:selectedIds]
+    is_in_list = users_ids.include?(@current_user.id)
+    @users = User.where(id: users_ids).destroy_all
+    if is_in_list
+      render json: { error: 'You have been deleted!' }, status: :unauthorized
+    else
+      render json: User.all
+    end
+  end
+
   private
 
   def find_user
@@ -49,7 +76,7 @@ class UsersController < ApplicationController
 
   def user_params
     params.permit(
-      :avatar, :first_name, :last_name, :username, :email, :password, :password_confirmation
+      :avatar, :first_name, :last_name, :username, :email, :password, :password_confirmation, :blocked
     )
   end
 end

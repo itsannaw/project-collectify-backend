@@ -11,4 +11,10 @@ class User < ApplicationRecord
   validates :password,
             length: { minimum: 6 },
             if: -> { new_record? || !password.nil? }
+
+
+  def unblock
+    update(blocked: false)
+  end
+
 end
