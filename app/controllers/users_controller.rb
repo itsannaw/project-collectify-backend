@@ -34,11 +34,6 @@ class UsersController < ApplicationController
     status: :unprocessable_entity
   end
 
-  # DELETE /users/{username}
-  def destroy
-    @user.destroy
-  end
-
   def block_users
     users_ids = params[:selectedIds]
     @users = User.where(id: users_ids).update_all(blocked: true)
