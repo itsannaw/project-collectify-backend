@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post '/users/unblock', to: 'users#unblock_users'
   post '/users/delete', to: 'users#delete_users'
   post '/collection', to: 'collections#create'
+  get '/categories', to: 'categories#index'
   get '/*a', to: 'application#not_found'
   get 'up' => 'rails/health#show', as: :rails_health_check
 end
