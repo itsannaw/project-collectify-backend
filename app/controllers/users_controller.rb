@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :authorize_request, except: :create
-  before_action :find_user, except: %i[create index block_users unblock_users delete_users]
+  before_action :find_user, except: %i[create index block_users unblock_users delete_users me]
 
   # GET /users
   def index
@@ -13,6 +13,10 @@ class UsersController < ApplicationController
   # GET /users/{username}
   def show
     render json: @user, status: :ok
+  end
+
+  def me
+    render json: @current_user, status: :ok
   end
 
   # POST /users
