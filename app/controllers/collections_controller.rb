@@ -2,6 +2,8 @@
 
 class CollectionsController < ApplicationController
   before_action :set_collection, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_request, except: [:index, :show]
+
 
   def index
     @collections = Collection.all
@@ -16,12 +18,14 @@ class CollectionsController < ApplicationController
   end
 
   def create
+    params[:collection][:user_id] = @current_user.id
+    puts params
     @collection = Collection.new(collection_params)
-
     if @collection.save
-      redirect_to @collection, notice: 'The collection has been successfully created.'
+      render json: CollectionSerializer.new(@collection).serializable_hash[:data][:attributes], status: :created
     else
-      render :new
+      render json: { errors: @collection.errors },
+             status: :unprocessable_entity
     end
   end
 
