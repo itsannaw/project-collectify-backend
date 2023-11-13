@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :users, param: :_username
   post '/users', to: 'users#create'
   get '/users', to: 'users#index'
   get '/me', to: 'users#me'
