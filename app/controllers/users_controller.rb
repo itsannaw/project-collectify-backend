@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   end
 
   def me
-    render json: @current_user, status: :ok
+    render json:  UserSerializer.new(@current_user).serializable_hash[:data][:attributes], status: :ok
   end
 
   # POST /users
