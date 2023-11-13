@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post '/users/block', to: 'users#block_users'
   post '/users/unblock', to: 'users#unblock_users'
   post '/users/delete', to: 'users#delete_users'
+  delete '/users/logout', to: 'users#destroy'
   post '/collection', to: 'collections#create'
   get '/categories', to: 'categories#index'
   get '/*a', to: 'application#not_found'
