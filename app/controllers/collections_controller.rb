@@ -7,6 +7,7 @@ class CollectionsController < ApplicationController
 
   def index
     @collections = Collection.all
+    render json: @collections, status: :ok
   end
 
   def show
@@ -18,9 +19,10 @@ class CollectionsController < ApplicationController
   end
 
   def create
-    params[:collection][:user_id] = @current_user.id
-    puts params
-    @collection = Collection.new(collection_params)
+    image_uploads_controller = ImageUploadsController.new
+    image_url = image_uploads_controller.upload_to_google_storage(params[:file])
+    params[:user_id] = @current_user.id
+    @collection = Collection.new(collection_params.merge(image_url: image_url))
     if @collection.save
       render json: CollectionSerializer.new(@collection).serializable_hash[:data][:attributes], status: :created
     else
@@ -53,7 +55,7 @@ class CollectionsController < ApplicationController
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :desc, :image_url, :category_id, :user_id,
+    params.permit(:title, :desc, :image_url, :category_id, :user_id,
       :custom_string1_name, :custom_string1_enabled, :custom_string2_name, :custom_string2_enabled,
       :custom_string3_name, :custom_string3_enabled, :custom_text1_name, :custom_text1_enabled,
       :custom_text2_name, :custom_text2_enabled, :custom_text3_name, :custom_text3_enabled,

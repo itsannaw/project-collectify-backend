@@ -36,8 +36,14 @@ gem 'jbuilder'
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem 'jwt'
+
 gem 'rack-cors'
+
 gem 'jsonapi-serializer'
+
+gem 'google-cloud-storage'
+
+gem 'dotenv-rails'
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
