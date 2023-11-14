@@ -12,7 +12,7 @@ class AuthenticationController < ApplicationController
       @user.save(validate: false)
       token = JsonWebToken.encode(user_id: @user.id)
       time = Time.now + 24.hours.to_i
-      render json: { token:, exp: time.strftime('%m-%d-%Y %H:%M'),
+      render json: { token: token, exp: time.strftime('%m-%d-%Y %H:%M'),
                      username: @user.username }, status: :ok
     else
       render json: { error: 'Invalid email or password!' }, status: :unauthorized
