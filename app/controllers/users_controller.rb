@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :authorize_request, except: :create
-  before_action :find_user, except: %i[create index block_users unblock_users delete_users me destroy]
+  before_action :find_user, except: %i[create index block_users unblock_users delete_users me destroy create_avatar]
 
   # GET /users
   def index
@@ -68,6 +68,14 @@ class UsersController < ApplicationController
   def destroy
     request.headers['Authorization'] = nil
     render json: { message: 'Logged out successfully' }
+  end
+
+  def create_avatar
+    image_uploads_controller = ImageUploadsController.new
+    file = image_uploads_controller.upload_to_google_storage(params[:file])
+    params[:user_id] = @current_user.id
+    @current_user.update(avatar: file)
+    render json:  { message: 'Successfully!' }
   end
 
   private

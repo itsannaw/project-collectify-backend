@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   post '/users/unblock', to: 'users#unblock_users'
   post '/users/delete', to: 'users#delete_users'
   delete '/users/logout', to: 'users#destroy'
+  post '/create_avatar', to: 'users#create_avatar'
 
   #collection
   post '/collection', to: 'collections#create'

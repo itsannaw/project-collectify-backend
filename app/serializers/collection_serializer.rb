@@ -15,7 +15,7 @@ class CollectionSerializer
   end
 
   attribute :user do |object|
-    object.user.attributes.slice('first_name', 'last_name', 'username') if object.user.present?
+    object.user.attributes.slice('first_name', 'last_name', 'username', 'avatar') if object.user.present?
   end
 
 end
