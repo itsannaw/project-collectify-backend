@@ -2,21 +2,24 @@
 
 class CollectionsController < ApplicationController
   before_action :set_collection, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_request, except: [:index, :show]
+  before_action :authorize_request, except: [:show]
 
 
   def index
     @collections = Collection.all
+    if params[:user_id]
+      @collections = @collections.where(user_id: params[:user_id])
+      if params[:favorite]
+
+      end
+    end
     render json: @collections, status: :ok
   end
 
   def show
-
+    render json: CollectionSerializer.new(@collection).serializable_hash[:data][:attributes], status: :ok
   end
 
-  def new
-    @collection = Collection.new
-  end
 
   def create
     image_uploads_controller = ImageUploadsController.new

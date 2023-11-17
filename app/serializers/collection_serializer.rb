@@ -8,5 +8,14 @@ class CollectionSerializer
   :custom_int3_name, :custom_int3_enabled, :custom_bool1_name, :custom_bool1_enabled,
   :custom_bool2_name, :custom_bool2_enabled, :custom_bool3_name, :custom_bool3_enabled,
   :custom_date1_name, :custom_date1_enabled, :custom_date2_name, :custom_date2_enabled,
-  :custom_date3_name, :custom_date3_enabled
+  :custom_date3_name, :custom_date3_enabled, :category, :user, :created_at
+
+  def category
+    object.categories.find(&:category_id)
+  end
+
+  attribute :user do |object|
+    object.user.attributes.slice('first_name', 'last_name', 'username') if object.user.present?
+  end
+
 end
