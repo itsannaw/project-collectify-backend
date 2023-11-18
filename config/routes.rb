@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   post '/users/block', to: 'users#block_users'
   post '/users/unblock', to: 'users#unblock_users'
   post '/users/delete', to: 'users#delete_users'
+  post '/users/set_admin', to: 'users#set_admin'
+  post '/users/unset_admin', to: 'users#unset_admin'
   delete '/users/logout', to: 'users#destroy'
   post '/create_avatar', to: 'users#create_avatar'
 

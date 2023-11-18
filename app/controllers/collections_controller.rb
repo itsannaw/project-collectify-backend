@@ -9,7 +9,7 @@ class CollectionsController < ApplicationController
     @collections = Collection.all
     if params[:user_id]
       @collections = @collections.where(user_id: params[:user_id])
-      if params[:favorite]
+    if params[:favorite]
 
       end
     end

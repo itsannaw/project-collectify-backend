@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  include ApplicationHelper
   before_action :authorize_request, except: :create
-  before_action :find_user, except: %i[create index block_users unblock_users delete_users me destroy create_avatar]
+  before_action :find_user, except: %i[create index block_users unblock_users delete_users me destroy create_avatar set_admin unset_admin]
 
   # GET /users
   def index
     @users = User.all
-    render json: @users, status: :ok
+    p 'test'
+    render json: get_many_serializer(UserSerializer, @users), status: :ok
   end
 
   # GET /users/{username}
@@ -44,14 +46,30 @@ class UsersController < ApplicationController
     if users_ids.include?(@current_user.id)
       render json: { error: 'You have been blocked and logged out!' }, status: :unauthorized
     else
-      render json: User.all
+      @users = User.all
+      render json:get_many_serializer(UserSerializer, @users), status: :ok
     end
   end
 
   def unblock_users
     users_ids = params[:selectedIds]
     @users = User.where(id: users_ids).update_all(blocked: false)
-    render json: User.all
+    @users = User.all
+    render json:get_many_serializer(UserSerializer, @users), status: :ok
+  end
+
+  def set_admin
+    users_ids = params[:selectedIds]
+    @users = User.where(id: users_ids).update_all(admin: true)
+    @users = User.all
+    render json:get_many_serializer(UserSerializer, @users), status: :ok
+  end
+
+  def unset_admin
+    users_ids = params[:selectedIds]
+    @users = User.where(id: users_ids).update_all(admin: false)
+    @users = User.all
+    render json:get_many_serializer(UserSerializer, @users), status: :ok
   end
 
   def delete_users
@@ -61,7 +79,8 @@ class UsersController < ApplicationController
     if is_in_list
       render json: { error: 'You have been deleted!' }, status: :unauthorized
     else
-      render json: User.all
+      @users = User.all
+      render json:get_many_serializer(UserSerializer, @users), status: :ok
     end
   end
 
