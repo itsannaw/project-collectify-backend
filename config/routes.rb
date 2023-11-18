@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   post '/collection', to: 'collections#create'
   get '/collections', to: 'collections#index'
   get '/collection/:id', to: 'collections#show'
+  put '/collection/:id', to: 'collections#update'
+  delete '/collection/:id', to: 'collections#destroy'
 
   #categories
   get '/categories', to: 'categories#index'

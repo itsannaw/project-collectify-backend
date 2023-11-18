@@ -16,6 +16,10 @@ class CollectionsController < ApplicationController
     render json: @collections, status: :ok
   end
 
+  def all_collection
+    @collections = Collection.all
+  end
+
   def show
     render json: CollectionSerializer.new(@collection).serializable_hash[:data][:attributes], status: :ok
   end
@@ -40,7 +44,7 @@ class CollectionsController < ApplicationController
 
   def update
     if @collection.update(collection_params)
-      redirect_to @collection, notice: 'The collection has been successfully updated.'
+      render json: { message: 'The collection has been successfully updated.' }, status: :ok
     else
       render :edit
     end
@@ -48,7 +52,7 @@ class CollectionsController < ApplicationController
 
   def destroy
     @collection.destroy
-    redirect_to collections_url, notice: 'The collection has been successfully deleted.'
+    render json: { message: 'Successfully!' }, status: :ok
   end
 
   private
