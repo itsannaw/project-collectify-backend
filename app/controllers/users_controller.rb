@@ -3,12 +3,13 @@
 class UsersController < ApplicationController
   include ApplicationHelper
   before_action :authorize_request, except: :create
-  before_action :find_user, except: %i[create index block_users unblock_users delete_users me destroy create_avatar set_admin unset_admin]
+  before_action :find_user,
+                except: %i[create index block_users unblock_users delete_users me destroy create_avatar set_admin
+                           unset_admin]
 
   # GET /users
   def index
     @users = User.all
-    p 'test'
     render json: get_many_serializer(UserSerializer, @users), status: :ok
   end
 
@@ -18,7 +19,7 @@ class UsersController < ApplicationController
   end
 
   def me
-    render json:  UserSerializer.new(@current_user).serializable_hash[:data][:attributes], status: :ok
+    render json: UserSerializer.new(@current_user).serializable_hash[:data][:attributes], status: :ok
   end
 
   # POST /users
@@ -37,7 +38,7 @@ class UsersController < ApplicationController
     return if @user.update(user_params)
 
     render json: { error: { message: 'Failed to create user', details: @user.errors.full_messages } },
-    status: :unprocessable_entity
+           status: :unprocessable_entity
   end
 
   def block_users
@@ -47,7 +48,7 @@ class UsersController < ApplicationController
       render json: { error: 'You have been blocked and logged out!' }, status: :unauthorized
     else
       @users = User.all
-      render json:get_many_serializer(UserSerializer, @users), status: :ok
+      render json: get_many_serializer(UserSerializer, @users), status: :ok
     end
   end
 
@@ -55,21 +56,21 @@ class UsersController < ApplicationController
     users_ids = params[:selectedIds]
     @users = User.where(id: users_ids).update_all(blocked: false)
     @users = User.all
-    render json:get_many_serializer(UserSerializer, @users), status: :ok
+    render json: get_many_serializer(UserSerializer, @users), status: :ok
   end
 
   def set_admin
     users_ids = params[:selectedIds]
     @users = User.where(id: users_ids).update_all(admin: true)
     @users = User.all
-    render json:get_many_serializer(UserSerializer, @users), status: :ok
+    render json: get_many_serializer(UserSerializer, @users), status: :ok
   end
 
   def unset_admin
     users_ids = params[:selectedIds]
     @users = User.where(id: users_ids).update_all(admin: false)
     @users = User.all
-    render json:get_many_serializer(UserSerializer, @users), status: :ok
+    render json: get_many_serializer(UserSerializer, @users), status: :ok
   end
 
   def delete_users
@@ -80,7 +81,7 @@ class UsersController < ApplicationController
       render json: { error: 'You have been deleted!' }, status: :unauthorized
     else
       @users = User.all
-      render json:get_many_serializer(UserSerializer, @users), status: :ok
+      render json: get_many_serializer(UserSerializer, @users), status: :ok
     end
   end
 
@@ -94,7 +95,7 @@ class UsersController < ApplicationController
     file = image_uploads_controller.upload_to_google_storage(params[:file])
     params[:user_id] = @current_user.id
     @current_user.update(avatar: file)
-    render json:  { avatar: file }
+    render json: { avatar: file }
   end
 
   private

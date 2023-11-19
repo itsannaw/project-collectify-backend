@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImageUploadsController < ApplicationController
   require 'google/cloud/storage'
 
@@ -9,7 +11,6 @@ class ImageUploadsController < ApplicationController
   end
 
   def upload_to_google_storage(file)
-
     storage = Google::Cloud::Storage.new(
       project_id: ENV['GOOGLE_CLOUD_PROJECT_ID'],
       credentials: JSON.parse(ENV['GOOGLE_CLOUD_STORAGE_CREDENTIALS'])

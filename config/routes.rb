@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   post '/auth/login', to: 'authentication#login'
 
-  #users
+  # users
   post '/users', to: 'users#create'
   get '/users', to: 'users#index'
   get '/me', to: 'users#me'
@@ -15,14 +15,14 @@ Rails.application.routes.draw do
   delete '/users/logout', to: 'users#destroy'
   post '/create_avatar', to: 'users#create_avatar'
 
-  #collection
+  # collection
   post '/collection', to: 'collections#create'
   get '/collections', to: 'collections#index'
   get '/collection/:id', to: 'collections#show'
   put '/collection/:id', to: 'collections#update'
   delete '/collection/:id', to: 'collections#destroy'
 
-  #categories
+  # categories
   get '/categories', to: 'categories#index'
   get '/*a', to: 'application#not_found'
   get 'up' => 'rails/health#show', as: :rails_health_check
