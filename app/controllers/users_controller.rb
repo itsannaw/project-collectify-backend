@@ -94,7 +94,7 @@ class UsersController < ApplicationController
     file = image_uploads_controller.upload_to_google_storage(params[:file])
     params[:user_id] = @current_user.id
     @current_user.update(avatar: file)
-    render json:  { message: 'Successfully!' }
+    render json:  { avatar: file }
   end
 
   private
