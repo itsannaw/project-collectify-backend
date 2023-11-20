@@ -26,4 +26,7 @@ Rails.application.routes.draw do
   get '/categories', to: 'categories#index'
   get '/*a', to: 'application#not_found'
   get 'up' => 'rails/health#show', as: :rails_health_check
+
+  # items
+  post '/item', to: 'items#create'
 end

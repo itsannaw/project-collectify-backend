@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   has_many :collections
+  has_many :items
   has_secure_password
   # mount_uploader :avatar, AvatarUploader
   validates :first_name, presence: true

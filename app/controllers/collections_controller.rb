@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CollectionsController < ApplicationController
-  before_action :set_collection, only: %i[show edit update destroy]
+  before_action :set_collection, only: %i[show update destroy]
   before_action :authorize_request, except: [:show]
 
   def index
@@ -30,8 +30,6 @@ class CollectionsController < ApplicationController
              status: :unprocessable_entity
     end
   end
-
-  def edit; end
 
   def update
     if @collection.update(collection_params)

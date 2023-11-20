@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class Tag < ApplicationRecord
-  has_many :items
+  has_many :items_tags
 end
