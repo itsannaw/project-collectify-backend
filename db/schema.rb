@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_20_133739) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_20_212823) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,8 +60,15 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_20_133739) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "item_tags", force: :cascade do |t|
+    t.integer "tag_id"
+    t.integer "item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "items", force: :cascade do |t|
-    t.integer "title"
+    t.string "title"
     t.integer "user_id"
     t.integer "collection_id"
     t.string "custom_string1"
@@ -79,13 +86,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_20_133739) do
     t.date "custom_date1"
     t.date "custom_date2"
     t.date "custom_date3"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "items_tags", force: :cascade do |t|
-    t.integer "tag_id"
-    t.integer "item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -111,8 +111,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_20_133739) do
 
   add_foreign_key "collections", "categories"
   add_foreign_key "collections", "users"
+  add_foreign_key "item_tags", "items"
+  add_foreign_key "item_tags", "tags"
   add_foreign_key "items", "collections"
   add_foreign_key "items", "users"
-  add_foreign_key "items_tags", "items"
-  add_foreign_key "items_tags", "tags"
 end
