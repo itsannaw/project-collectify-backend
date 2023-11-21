@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
 
   def index
     @items = Item.where(collection_id: params[:collection_id]) if params[:collection_id]
-    render json: @items, status: :ok
+    render json: @items, include: [:tags], status: :ok
   end
 
   def show

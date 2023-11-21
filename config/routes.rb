@@ -25,9 +25,12 @@ Rails.application.routes.draw do
   # categories
   get '/categories', to: 'categories#index'
 
-    # items
+  # items
   post '/items', to: 'items#create'
   get '/items/:collection_id', to: 'items#index'
+
+  # tags
+  get '/tags', to: 'tags#index'
 
   get '/*a', to: 'application#not_found'
   get 'up' => 'rails/health#show', as: :rails_health_check
