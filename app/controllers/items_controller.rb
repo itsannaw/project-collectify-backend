@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ItemsController < ApplicationController
-  before_action :authorize_request, except: [:show, :index]
+  before_action :authorize_request, except: %i[show index]
 
   def index
     @items = Item.where(collection_id: params[:collection_id]) if params[:collection_id]
@@ -23,7 +23,6 @@ class ItemsController < ApplicationController
       render json: { errors: @item.errors },
              status: :unprocessable_entity
     end
-
   end
 
   def update
