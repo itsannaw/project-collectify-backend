@@ -1,15 +1,21 @@
 # frozen_string_literal: true
 
 class ItemsController < ApplicationController
+  include ApplicationHelper
   before_action :authorize_request, except: %i[show index]
+  before_action :set_collection, only: %i[show update destroy]
 
   def index
     @items = Item.where(collection_id: params[:collection_id]) if params[:collection_id]
-    render json: @items, include: [:tags], status: :ok
+    render json: get_many_serializer(ItemSerializer, @items), status: :ok
+  end
+
+  def all_item
+    @item = Item.all
   end
 
   def show
-    @item = Item.find(params[:id])
+    render json: ItemSerializer.new(@item).serializable_hash[:data][:attributes], status: :ok
   end
 
   def create
@@ -35,6 +41,9 @@ class ItemsController < ApplicationController
   end
 
   private
+  def set_collection
+    @item = Item.find(params[:id])
+  end
 
   def create_tags_relations(item)
     params[:tags].each do |tag|

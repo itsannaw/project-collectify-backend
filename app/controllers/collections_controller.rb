@@ -2,7 +2,7 @@
 
 class CollectionsController < ApplicationController
   before_action :set_collection, only: %i[show update destroy]
-  before_action :authorize_request, except: [:show]
+  before_action :authorize_request, except: %i[show all_collections]
 
   def index
     @collections = Collection.all
@@ -10,8 +10,9 @@ class CollectionsController < ApplicationController
     render json: @collections, status: :ok
   end
 
-  def all_collection
+  def all_collections
     @collections = Collection.all
+    render json: @collections, status: :ok
   end
 
   def show

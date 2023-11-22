@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  has_many :collections
-  has_many :items
+  has_many :collections, dependent: :delete_all
+  has_many :items, dependent: :delete_all
   has_secure_password
   # mount_uploader :avatar, AvatarUploader
   validates :first_name, presence: true
