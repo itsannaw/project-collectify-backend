@@ -25,6 +25,7 @@ class RatingsController < ApplicationController
     else
       render json: { error: "Не удалось сохранить рейтинг", details: @rating.errors.full_messages }, status: :unprocessable_entity
     end
+    puts
   end
 
   private
