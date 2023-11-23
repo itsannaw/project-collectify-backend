@@ -41,6 +41,9 @@ Rails.application.routes.draw do
   get '/like/:item_id', to: 'likes#create'
   get '/dislike/:item_id', to: 'likes#destroy'
 
+  # rating
+  post '/rating/:collection_id', to: 'ratings#create'
+
   get '/*a', to: 'application#not_found'
   get 'up' => 'rails/health#show', as: :rails_health_check
 end

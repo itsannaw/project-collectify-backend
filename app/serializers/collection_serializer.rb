@@ -10,13 +10,21 @@ class CollectionSerializer
              :custom_int3_name, :custom_int3_enabled, :custom_bool1_name, :custom_bool1_enabled,
              :custom_bool2_name, :custom_bool2_enabled, :custom_bool3_name, :custom_bool3_enabled,
              :custom_date1_name, :custom_date1_enabled, :custom_date2_name, :custom_date2_enabled,
-             :custom_date3_name, :custom_date3_enabled, :category, :user, :created_at
+             :custom_date3_name, :custom_date3_enabled, :category, :user, :ratings, :created_at
 
-  def category
-    object.category
+  attribute :rating do |object, params|
+    user = params[:current_user]
+    user.present? ? object.rating_by_user(user) : Nil
+  end
+
+  attribute :rating_total do |object, params|
+    ratings_count = object.ratings.size
+    ratings_sum = object.ratings.reduce(0) { |sum, rating_item| sum + rating_item.rating }
+    (ratings_sum / ratings_count.to_f).round(2)
   end
 
   attribute :user do |object|
     object.user.attributes.slice('first_name', 'last_name', 'username', 'avatar') if object.user.present?
   end
+
 end

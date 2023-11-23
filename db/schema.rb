@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_23_175831) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_23_205631) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -99,6 +99,16 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_23_175831) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "collection_id", null: false
+    t.integer "rating", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_ratings_on_collection_id"
+    t.index ["user_id"], name: "index_ratings_on_user_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
@@ -126,4 +136,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_23_175831) do
   add_foreign_key "items", "users"
   add_foreign_key "likes", "items"
   add_foreign_key "likes", "users"
+  add_foreign_key "ratings", "collections", on_delete: :cascade
+  add_foreign_key "ratings", "users", on_delete: :cascade
 end

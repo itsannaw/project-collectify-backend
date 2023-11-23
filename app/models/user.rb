@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :items, dependent: :delete_all
   has_many :likes, dependent: :destroy
   has_many :liked_items, through: :likes, source: :item
+  has_many :ratings, dependent: :destroy
   has_secure_password
   # mount_uploader :avatar, AvatarUploader
   validates :first_name, presence: true

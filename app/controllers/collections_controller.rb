@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class CollectionsController < ApplicationController
+  include ApplicationHelper
   before_action :set_collection, only: %i[show update destroy]
   before_action :authorize_request, except: %i[show all_collections]
+  before_action :login_if_authorized, only: %i[show index]
+
 
   def index
-    @collections = Collection.all
     @collections = @collections.where(user_id: params[:user_id]) if params[:user_id]
     render json: @collections, status: :ok
   end
@@ -16,7 +18,8 @@ class CollectionsController < ApplicationController
   end
 
   def show
-    render json: CollectionSerializer.new(@collection).serializable_hash[:data][:attributes], status: :ok
+    data = get_serializer(CollectionSerializer, @collection, { current_user: @current_user })
+    render json: data, status: :ok
   end
 
   def create
