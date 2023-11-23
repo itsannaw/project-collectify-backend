@@ -17,4 +17,11 @@ class ApplicationController < ActionController::API
       render json: { errors: e.message }, status: :unauthorized
     end
   end
+
+  def login_if_authorized
+    header = request.headers['Authorization']
+    if header
+      authorize_request
+    end
+  end
 end

@@ -37,6 +37,10 @@ Rails.application.routes.draw do
   # tags
   get '/tags', to: 'tags#index'
 
+  # like
+  get '/like/:item_id', to: 'likes#create'
+  get '/dislike/:item_id', to: 'likes#destroy'
+
   get '/*a', to: 'application#not_found'
   get 'up' => 'rails/health#show', as: :rails_health_check
 end

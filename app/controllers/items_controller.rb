@@ -3,11 +3,12 @@
 class ItemsController < ApplicationController
   include ApplicationHelper
   before_action :authorize_request, except: %i[show index]
-  before_action :set_collection, only: %i[show update destroy]
+  before_action :login_if_authorized, only: %i[show index]
+  before_action :set_item, only: %i[show update destroy like]
 
   def index
     @items = Item.where(collection_id: params[:collection_id]) if params[:collection_id]
-    render json: get_many_serializer(ItemSerializer, @items), status: :ok
+    render json: get_many_serializer(ItemSerializer, @items, { current_user: @current_user }), status: :ok
   end
 
   def all_item
@@ -15,7 +16,9 @@ class ItemsController < ApplicationController
   end
 
   def show
-    render json: ItemSerializer.new(@item).serializable_hash[:data][:attributes], status: :ok
+    data = get_serializer(ItemSerializer, @item, { current_user: @current_user })
+
+    render json: data, status: :ok
   end
 
   def create
@@ -32,7 +35,11 @@ class ItemsController < ApplicationController
   end
 
   def update
-    @item = Item.find(params[:id])
+    if @item.update(item_params)
+      render json: { message: 'The item has been successfully updated.' }, status: :ok
+    else
+      render json: { errors: @item.errors }, status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -40,8 +47,12 @@ class ItemsController < ApplicationController
     @item.destroy
   end
 
+  def like
+  end
+
   private
-  def set_collection
+
+  def set_item
     @item = Item.find(params[:id])
   end
 
