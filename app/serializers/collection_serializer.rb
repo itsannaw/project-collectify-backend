@@ -2,7 +2,7 @@
 
 class CollectionSerializer
   include JSONAPI::Serializer
-  attributes :title, :desc, :image_url, :category_id, :user_id,
+  attributes :id, :title, :desc, :image_url, :category_id, :user_id,
              :custom_string1_name, :custom_string1_enabled, :custom_string2_name, :custom_string2_enabled,
              :custom_string3_name, :custom_string3_enabled, :custom_text1_name, :custom_text1_enabled,
              :custom_text2_name, :custom_text2_enabled, :custom_text3_name, :custom_text3_enabled,

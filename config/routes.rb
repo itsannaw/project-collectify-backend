@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   # collection
   post '/collection', to: 'collections#create'
   get '/all_collections', to: 'collections#all_collections'
+  get '/large_collections', to: 'collections#large_collections'
   get '/collections', to: 'collections#index'
   get '/collection/:id', to: 'collections#show'
   put '/collection/:id', to: 'collections#update'
@@ -30,9 +31,11 @@ Rails.application.routes.draw do
   post '/items', to: 'items#create'
   get '/items/:collection_id', to: 'items#index'
   get '/item/:id', to: 'items#show'
-  get '/all_items', to: 'items#all_item'
+  get '/all_items', to: 'items#all_items'
   put '/items/:id', to: 'items#update'
   delete '/item/:id', to: 'items#destroy'
+  get '/liked_items', to: 'items#liked_items'
+
 
   # tags
   get '/tags', to: 'tags#index'

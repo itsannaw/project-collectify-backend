@@ -2,7 +2,7 @@
 
 class ItemsController < ApplicationController
   include ApplicationHelper
-  before_action :authorize_request, except: %i[show index]
+  before_action :authorize_request, except: %i[show index all_items]
   before_action :login_if_authorized, only: %i[show index]
   before_action :set_item, only: %i[show update destroy like]
 
@@ -11,9 +11,20 @@ class ItemsController < ApplicationController
     render json: get_many_serializer(ItemSerializer, @items, { current_user: @current_user }), status: :ok
   end
 
-  def all_item
-    @item = Item.all
+  def liked_items
+    @likes = Like.where(user_id: @current_user.id)
+    items_ids = @likes.map do |like|
+      like.item_id
+    end
+
+    @items = Item.where(id: items_ids)
+    render json: get_many_serializer(ItemSerializer, @items, { current_user: @current_user }), status: :ok
   end
+
+    def all_items
+      @items = Item.all.order(created_at: :desc)
+      render json: get_many_serializer(ItemSerializer, @items, { current_user: @current_user }), status: :ok
+    end
 
   def show
     data = get_serializer(ItemSerializer, @item, { current_user: @current_user })

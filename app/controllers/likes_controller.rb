@@ -14,4 +14,5 @@ class LikesController < ApplicationController
     like.destroy
     render json: { message: 'Item disliked!'}, status: :ok
   end
+
 end

@@ -3,18 +3,29 @@
 class CollectionsController < ApplicationController
   include ApplicationHelper
   before_action :set_collection, only: %i[show update destroy]
-  before_action :authorize_request, except: %i[show all_collections]
+  before_action :authorize_request, except: %i[show all_collections large_collections]
   before_action :login_if_authorized, only: %i[show index]
 
 
   def index
     @collections = Collection.where(user_id: params[:user_id]) if params[:user_id]
-    render json: @collections, status: :ok
+    data = get_many_serializer(CollectionSerializer, @collections, { current_user: @current_user })
+    render json: data, status: :ok
   end
 
   def all_collections
     @collections = Collection.all
-    render json: @collections, status: :ok
+    data = get_many_serializer(CollectionSerializer, @collections, { current_user: @current_user })
+    render json: data, status: :ok
+  end
+
+  def large_collections
+    @collections = Collection.joins(:items)
+    .group('collections.id')
+    .order('COUNT(items.id) DESC')
+    .limit(5)
+    data = get_many_serializer(CollectionSerializer, @collections, { current_user: @current_user })
+    render json: data, status: :ok
   end
 
   def show
