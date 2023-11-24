@@ -14,7 +14,7 @@ class CollectionSerializer
 
   attribute :rating do |object, params|
     user = params[:current_user]
-    user.present? ? object.rating_by_user(user) : Nil
+    user.present? ? object.rating_by_user(user) : false
   end
 
   attribute :rating_total do |object, params|
