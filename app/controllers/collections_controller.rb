@@ -8,7 +8,7 @@ class CollectionsController < ApplicationController
 
 
   def index
-    @collections = @collections.where(user_id: params[:user_id]) if params[:user_id]
+    @collections = Collection.where(user_id: params[:user_id]) if params[:user_id]
     render json: @collections, status: :ok
   end
 
