@@ -51,7 +51,7 @@ class ItemsController < ApplicationController
     @item = Item.new(item_params)
     if @item.save
       create_tags_relations(@item)
-      render json: { message: 'Succesfully!' }, status: :created
+      render json: { message: 'Succesfully!', id: @item.id }, status: :created
     else
       render json: { errors: @item.errors },
              status: :unprocessable_entity
