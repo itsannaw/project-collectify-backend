@@ -3,7 +3,7 @@
 class ItemsController < ApplicationController
   include ApplicationHelper
   before_action :authorize_request, except: %i[show index all_items]
-  before_action :login_if_authorized, only: %i[show index]
+  before_action :login_if_authorized, only: %i[show index all_items]
   before_action :set_item, only: %i[show update destroy like]
 
   def index
@@ -22,8 +22,17 @@ class ItemsController < ApplicationController
   end
 
   def all_items
+    @items = Item.all
+
+    # filter by tags
+    if params[:tags].present?
+      tags_titles = params[:tags]
+      @items = @items.joins(:tags).where(tags: { title: tags_titles })
+    end
+
+    # pagination
     per_page = params[:per_page] || 10
-    @items = Item.all.order(created_at: :desc).page(params[:page]).per(per_page)
+    @items = @items.order(created_at: :desc).page(params[:page]).per(per_page)
     render json: {
       total_pages: @items.total_pages,
       items: get_many_serializer(ItemSerializer, @items, { current_user: @current_user })
