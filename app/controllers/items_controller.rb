@@ -21,10 +21,14 @@ class ItemsController < ApplicationController
     render json: get_many_serializer(ItemSerializer, @items, { current_user: @current_user }), status: :ok
   end
 
-    def all_items
-      @items = Item.all.order(created_at: :desc)
-      render json: get_many_serializer(ItemSerializer, @items, { current_user: @current_user }), status: :ok
-    end
+  def all_items
+    per_page = params[:per_page] || 10
+    @items = Item.all.order(created_at: :desc).page(params[:page]).per(per_page)
+    render json: {
+      total_pages: @items.total_pages,
+      items: get_many_serializer(ItemSerializer, @items, { current_user: @current_user })
+    }, status: :ok
+  end
 
   def show
     data = get_serializer(ItemSerializer, @item, { current_user: @current_user })

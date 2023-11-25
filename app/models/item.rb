@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Item < ApplicationRecord
+  include Kaminari::PageScopeMethods
   has_many :item_tags, dependent: :destroy
   has_many :tags, through: :item_tags, dependent: :destroy
   belongs_to :user

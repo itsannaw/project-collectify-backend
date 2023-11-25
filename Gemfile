@@ -45,6 +45,8 @@ gem 'google-cloud-storage'
 
 gem 'dotenv-rails'
 
+gem 'kaminari', '~> 1.2', '>= 1.2.2'
+
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
