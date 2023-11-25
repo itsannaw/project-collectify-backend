@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  has_many :collections, dependent: :delete_all
-  has_many :items, dependent: :delete_all
+  has_many :collections, dependent: :destroy
+  has_many :items, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_items, through: :likes, source: :item
   has_many :ratings, dependent: :destroy
